@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.pedrosantos.workshopmongo.domain.User;
+import com.pedrosantos.workshopmongo.dto.UserDTO;
 import com.pedrosantos.workshopmongo.repository.UserRepository;
 import com.pedrosantos.workshopmongo.services.exceptions.ObjectNotFoundException;
 
@@ -16,6 +17,10 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
+    public User insert(User obj) {
+        return repo.insert(obj);
+    }
+
     public User findById(String id)  {
         Optional<User> obj = repo.findById(id);
 
@@ -24,5 +29,9 @@ public class UserService {
 
     public List<User> findAll() {
         return repo.findAll();
+    }
+
+    public User fromDTO(UserDTO objDto) {
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
     }
 }

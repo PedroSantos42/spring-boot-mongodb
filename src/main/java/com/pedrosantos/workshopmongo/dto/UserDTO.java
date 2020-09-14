@@ -11,13 +11,12 @@ public class UserDTO implements Serializable {
     private String name;
     private String email;
 
-
     public UserDTO() {
     }
 
     public UserDTO(User obj) {
         this.id = obj.getId();
-        this.name = obj.getEmail();
+        this.name = obj.getName();
         this.email = obj.getEmail();
     }
 
