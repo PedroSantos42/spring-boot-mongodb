@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.pedrosantos.workshopmongo.domain.Post;
 import com.pedrosantos.workshopmongo.domain.User;
 import com.pedrosantos.workshopmongo.dto.UserDTO;
 import com.pedrosantos.workshopmongo.services.UserService;
@@ -51,8 +52,8 @@ public class UserResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
-        User user = service.findById(id);
-        return ResponseEntity.ok().body(new UserDTO(user));
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(new UserDTO(obj));
     }
 
     @GetMapping
@@ -60,5 +61,11 @@ public class UserResource {
         List<User> list = service.findAll();
         List<UserDTO> listDto = list.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDto);
+    }
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
