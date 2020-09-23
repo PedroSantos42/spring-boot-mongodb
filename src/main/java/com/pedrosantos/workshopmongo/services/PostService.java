@@ -1,5 +1,6 @@
 package com.pedrosantos.workshopmongo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.pedrosantos.workshopmongo.domain.Post;
@@ -19,5 +20,9 @@ public class PostService {
         Optional<Post> obj = repo.findById(id);
 
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+    }
+
+    public List<Post> findByTitle(String text) {
+        return repo.findByTitleContainingIgnoreCase(text);
     }
 }
