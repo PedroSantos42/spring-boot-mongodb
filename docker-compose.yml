@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  java:
+    build: .
+    container_name: wm-java
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: wm-mongo
+    ports:
+      - 27017:27017
+    restart: always
+    
