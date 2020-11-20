@@ -1,10 +1,10 @@
-package com.pedrosantos.workshopmongo.resource;
+package com.pedrosantos.workshopmongo.resources;
 
 import java.util.Date;
 import java.util.List;
 
 import com.pedrosantos.workshopmongo.domain.Post;
-import com.pedrosantos.workshopmongo.resource.util.URL;
+import com.pedrosantos.workshopmongo.resources.util.URL;
 import com.pedrosantos.workshopmongo.services.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/posts")
 public class PostResource {
@@ -22,12 +24,14 @@ public class PostResource {
     @Autowired
     private PostService service;
 
+    @ApiOperation(value = "Busca o Post pelo ID")
     @GetMapping(value = "/{id}")
     public ResponseEntity<Post> findById(@PathVariable String id) {
         Post obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
+    @ApiOperation(value = "Busca o Post pelo Title")
     @GetMapping(value = "/titlesearch")
     public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
         text = URL.decodeParam(text);
@@ -35,6 +39,7 @@ public class PostResource {
         return ResponseEntity.ok().body(list);
     }
 
+    @ApiOperation(value = "Retorna todos os Posts com paginação")
     @GetMapping(value = "/fullsearch")
     public ResponseEntity<List<Post>> fullSearch(
         @RequestParam(value = "text", defaultValue = "") String text,

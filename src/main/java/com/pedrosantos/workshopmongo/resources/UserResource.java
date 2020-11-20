@@ -1,4 +1,4 @@
-package com.pedrosantos.workshopmongo.resource;
+package com.pedrosantos.workshopmongo.resources;
 
 import java.net.URI;
 import java.util.List;
