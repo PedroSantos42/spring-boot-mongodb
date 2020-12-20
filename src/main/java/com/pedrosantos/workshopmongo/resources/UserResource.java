@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
@@ -28,6 +30,7 @@ public class UserResource {
     @Autowired
     private UserService service;
 
+    @ApiOperation(value = "Find User by id")
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id) {
         User obj = service.fromDTO(objDto);
@@ -36,12 +39,14 @@ public class UserResource {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value = "Delete User by id")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value = "Create User")
     @PostMapping
     public ResponseEntity<Void> insert(@RequestBody UserDTO objDto) {
         User obj = service.fromDTO(objDto);
@@ -50,12 +55,14 @@ public class UserResource {
         return ResponseEntity.created(uri).build();
     }
 
+    @ApiOperation(value = "Find one User by id")
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
         User obj = service.findById(id);
         return ResponseEntity.ok().body(new UserDTO(obj));
     }
 
+    @ApiOperation(value = "Find all Users")
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         List<User> list = service.findAll();
@@ -63,6 +70,7 @@ public class UserResource {
         return ResponseEntity.ok().body(listDto);
     }
 
+    @ApiOperation(value = "Find all Posts of a User by user's id")
     @GetMapping(value = "/{id}/posts")
     public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
         User obj = service.findById(id);

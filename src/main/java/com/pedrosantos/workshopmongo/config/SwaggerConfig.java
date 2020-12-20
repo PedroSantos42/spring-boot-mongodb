@@ -50,18 +50,18 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-            "API do curso Spring Boot",
-            "Esta API é utilizada no curso de Spring Boot do prof. Nelio Alves", 
+            "API Spring Boot MongoDB",
+            "Esta API foi desenvolvida com propósitos de estudo e é baseada em curso do prof. Nélio Alves", 
             "Versão 1.0",
-            "https://www.udemy.com/terms",
+            "github.com/PedroSantos42",
 
             new Contact(
-                "Nelio Alves", 
-                "udemy.com/user/nelio-alves", 
-                "nelio.cursos@gmail.com"
+                "Pedro Santos", 
+                "https://www.linkedin.com/in/PedroSantos42", 
+                "pedroabs.dev42@gmail.com"
             ),
-            "Permitido uso para estudantes", 
-            "https://www.udemy.com/terms", 
+            "Permitido uso para qualquer finalidade", 
+            "", 
             Collections.emptyList() // Vendor Extensions
         );
     }

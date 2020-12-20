@@ -24,14 +24,14 @@ public class PostResource {
     @Autowired
     private PostService service;
 
-    @ApiOperation(value = "Busca o Post pelo ID")
+    @ApiOperation(value = "Find Post by id")
     @GetMapping(value = "/{id}")
     public ResponseEntity<Post> findById(@PathVariable String id) {
         Post obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
-    @ApiOperation(value = "Busca o Post pelo Title")
+    @ApiOperation(value = "Find Post by title")
     @GetMapping(value = "/titlesearch")
     public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
         text = URL.decodeParam(text);
@@ -39,7 +39,7 @@ public class PostResource {
         return ResponseEntity.ok().body(list);
     }
 
-    @ApiOperation(value = "Retorna todos os Posts com paginação")
+    @ApiOperation(value = "Return all Posts with pagination")
     @GetMapping(value = "/fullsearch")
     public ResponseEntity<List<Post>> fullSearch(
         @RequestParam(value = "text", defaultValue = "") String text,
