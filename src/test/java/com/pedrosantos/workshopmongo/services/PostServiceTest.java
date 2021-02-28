@@ -1,10 +1,12 @@
 package com.pedrosantos.workshopmongo.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ import com.pedrosantos.workshopmongo.domain.Post;
 import com.pedrosantos.workshopmongo.dto.AuthorDTO;
 import com.pedrosantos.workshopmongo.dto.CommentDTO;
 import com.pedrosantos.workshopmongo.repository.PostRepository;
+import com.pedrosantos.workshopmongo.services.exceptions.ObjectNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 class PostServiceTest {
@@ -38,6 +41,58 @@ class PostServiceTest {
 		assertNotNull(post);
 	}
 
+	@Test
+	public void givenInvalidArgs_FindById_ReturnObjectNotFoundException() {
+		given(postRepository.findById("123")).willReturn(mockOptionalOfPost());
+
+		ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class, () -> {
+			postService.findById("321");
+		});
+
+		assertNotNull(exception);
+		assertEquals("Objeto não encontrado", exception.getMessage());
+	}
+
+	@Test
+	public void givenValidArgs_FindByTitle_ReturnListOfPosts() {
+		given(postRepository.findByTitleContainingIgnoreCase(Mockito.any(String.class))).willReturn(mockPostList());
+
+		List<Post> posts = postService.findByTitle("Game of Thrones");
+
+		assertNotNull(posts);
+	}
+
+	@Test
+	public void givenValidArgs_FullSearch_ReturnListOfPosts() {
+		given(postRepository.findByTitleContainingIgnoreCase(Mockito.any(String.class))).willReturn(mockPostList());
+
+		List<Post> posts = postService.fullSearch("feliz", LocalDate.of(2018, 03, 20), LocalDate.of(2018, 03, 24));
+
+		assertNotNull(posts);
+	}
+
+	private List<Post> mockPostList() {
+		Optional<Post> post1 = mockOptionalOfPost();
+		post1.get().setId("111");
+		post1.get().setTitle("Game of Thrones");
+
+		Optional<Post> post2 = mockOptionalOfPost();
+		post2.get().setId("222");
+		post2.get().setTitle("Book of Five Rings");
+
+		Optional<Post> post3 = mockOptionalOfPost();
+		post3.get().setId("333");
+		post3.get().setTitle("Harry Potter");
+
+		List<Post> posts = new ArrayList<>();
+
+		posts.add(post1.get());
+		posts.add(post2.get());
+		posts.add(post3.get());
+
+		return posts;
+	}
+
 	private Optional<Post> mockOptionalOfPost() {
 		Post post = new Post();
 
@@ -48,11 +103,11 @@ class PostServiceTest {
 
 		List<CommentDTO> comments = new ArrayList<>();
 
-		comments.add(new CommentDTO("Comentário 1", new Date(654321987L), author));
-		comments.add(new CommentDTO("Comentário 2", new Date(321456123L), author));
+		comments.add(new CommentDTO("Comentário 1", LocalDate.of(2020, 2, 17), author));
+		comments.add(new CommentDTO("Comentário 2", LocalDate.of(2018, 4, 27), author));
 
 		post.setId("abc123-edf456-ghi789");
-		post.setDate(new Date(459459459L));
+		post.setDate(LocalDate.of(2020, 11, 12));
 		post.setTitle("Ipsum Lorem");
 		post.setBody("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
 		post.setAuthor(author);

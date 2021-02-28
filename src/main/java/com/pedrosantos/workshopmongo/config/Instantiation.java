@@ -1,8 +1,11 @@
 package com.pedrosantos.workshopmongo.config;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.TimeZone;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
 
 import com.pedrosantos.workshopmongo.domain.Post;
 import com.pedrosantos.workshopmongo.domain.User;
@@ -10,10 +13,6 @@ import com.pedrosantos.workshopmongo.dto.AuthorDTO;
 import com.pedrosantos.workshopmongo.dto.CommentDTO;
 import com.pedrosantos.workshopmongo.repository.PostRepository;
 import com.pedrosantos.workshopmongo.repository.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Instantiation implements CommandLineRunner {
@@ -27,9 +26,6 @@ public class Instantiation implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-
         userRepository.deleteAll();
         postRepository.deleteAll();
 
@@ -39,12 +35,12 @@ public class Instantiation implements CommandLineRunner {
         
         userRepository.saveAll(Arrays.asList(maria, alex, bob));
         
-        Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu viagem!", "Vou viajar para São Paulo, abraços...", new AuthorDTO(maria));
-        Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia!", "Acordei feliz hoje!", new AuthorDTO(maria));
+        Post post1 = new Post(null, LocalDate.of(2018, 3, 21), "Partiu viagem!", "Vou viajar para São Paulo, abraços...", new AuthorDTO(maria));
+        Post post2 = new Post(null, LocalDate.of(2018, 3, 23), "Bom dia!", "Acordei feliz hoje!", new AuthorDTO(maria));
         
-        CommentDTO comment1 = new CommentDTO("Boa viagem, mano!", sdf.parse("21/03/2018"), new AuthorDTO(alex));
-        CommentDTO comment2 = new CommentDTO("Aproveite!", sdf.parse("22/03/2018"), new AuthorDTO(bob));
-        CommentDTO comment3 = new CommentDTO("Tenha um ótimo dia!", sdf.parse("23/03/2018"), new AuthorDTO(alex));
+        CommentDTO comment1 = new CommentDTO("Boa viagem, mano!", LocalDate.of(2018, 3, 21), new AuthorDTO(alex));
+        CommentDTO comment2 = new CommentDTO("Aproveite!", LocalDate.of(2018, 3, 22), new AuthorDTO(bob));
+        CommentDTO comment3 = new CommentDTO("Tenha um ótimo dia!", LocalDate.of(2018, 3, 23), new AuthorDTO(alex));
 
         post1.getComments().addAll(Arrays.asList(comment1, comment2));
         post2.getComments().addAll(Arrays.asList(comment3));
@@ -53,6 +49,6 @@ public class Instantiation implements CommandLineRunner {
 
         maria.getPosts().addAll(Arrays.asList(post1, post2));
 
-        userRepository.save(maria);
-    }
+		userRepository.save(maria);
+	}
 }
