@@ -1,6 +1,8 @@
 package com.pedrosantos.workshopmongo.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
@@ -32,6 +36,14 @@ public class DynamoDBRepository {
 		return mapper.load(User.class, userId, email);
 	}
 
+	public List<User> getAllUsers() {
+		DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+
+		PaginatedScanList<User> paginatedScanList = mapper.scan(User.class, scanExpression);
+
+		return paginatedScanList;
+	}
+
 	public void updateUserDetails(User user) {
 		try {
 			mapper.save(user, buildDynamoDBSaveExpression(user));
@@ -40,8 +52,14 @@ public class DynamoDBRepository {
 		}
 	}
 
-	public void deleteUserDetails(User user) {
-		mapper.delete(user);
+	public Boolean deleteUserDetails(User user) {
+
+		if (user != null)
+			mapper.delete(user);
+		else
+			return false;
+
+		return true;
 	}
 
 	private DynamoDBSaveExpression buildDynamoDBSaveExpression(User user) {
