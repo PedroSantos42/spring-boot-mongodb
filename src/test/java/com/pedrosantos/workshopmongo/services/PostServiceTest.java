@@ -111,7 +111,7 @@ class PostServiceTest {
 		post.setTitle("Ipsum Lorem");
 		post.setBody("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
 		post.setAuthor(author);
-		post.setComments(comments);
+//		post.setComments(comments);
 
 		return Optional.of(post);
 	}
