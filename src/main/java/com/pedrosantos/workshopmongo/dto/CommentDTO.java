@@ -1,7 +1,7 @@
 package com.pedrosantos.workshopmongo.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +14,10 @@ public class CommentDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String text;
-    private Date date;
+    private LocalDate date;
     private AuthorDTO author;
 
-    public CommentDTO(String text, Date date, AuthorDTO author) {
+    public CommentDTO(String text, LocalDate date, AuthorDTO author) {
         this.text = text;
         this.date = date;
         this.author = author;
